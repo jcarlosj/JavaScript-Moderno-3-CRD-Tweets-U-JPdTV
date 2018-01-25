@@ -1,4 +1,4 @@
-/* Agrega 'Tweet' al DOM */
+/* Almacena 'Tweets' en el LocalStorage */
 
 // Constantes y Variables
 const listaTweets = document .getElementById( 'lista-tweets' );     // Obtiene el elemento donde se desplegarán los 'Trinos'
@@ -32,8 +32,8 @@ function agregarTweet( event ) {
     li.appendChild( botonBorrar );                  // Agrega el elemento 'a' al elemento 'li'
     listaTweets .appendChild( li );                 // Tomamos el elemento Padre en el que vamos a desplegar el elemento en el DOM
 
+    agregarTweetLocalStorage( tweet );              // Añadir 'Tweet' al Local Storage (solo el valor)
 }
-
 
 // Eliminar 'Tweet' del DOM desde el enlace X de cada 'Tweet'
 function borrarTweet( event ) {
@@ -49,4 +49,36 @@ function borrarTweet( event ) {
     else {
         console .log( 'Diste Click en otra parte' );
     }*/
+}
+
+// Agregar 'Tweet' al Local Storage
+function agregarTweetLocalStorage( tweet ) {
+    let tweets;
+
+    tweets = obtenerTweetsLocalStorage();       // Obtener los 'Tweets' existentes
+    tweets .push( tweet );                      // Agregar 'Tweet' al final del arrego a los ya existentes
+    tweets = JSON .stringify( tweets );         // Convertir un JSON a un 'String'
+    localStorage .setItem( 'tweets', tweets  );  // Agrega el 'String' al Local Storage
+
+    console .log( 'JSON.stringify ' , tweets );
+}
+
+// Obtener 'Tweets' del Local Storage
+function obtenerTweetsLocalStorage() {
+    let tweets;
+
+    // Validamos si el LocalStorage tiene valores
+    if( localStorage .getItem( 'tweets' ) === null ) {
+        // _No existen 'Tweets' 
+        tweets = [];          // Inicializa un 'Array' vacío  
+    }
+    else {
+        // Ya existen 'Tweets' 
+        tweets = localStorage .getItem( 'tweets' );     // Obtenemos los 'Tweets' que existen del LocalStorage
+        tweets = JSON .parse( tweets );                 // Convertir un JSON a un 'Array'
+
+        console .log( 'JSON.parse ', tweets );
+    }
+
+    return tweets;  // Retorna un 'Array'
 }
