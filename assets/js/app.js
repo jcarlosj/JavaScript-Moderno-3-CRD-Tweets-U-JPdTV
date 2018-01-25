@@ -9,6 +9,9 @@ eventListeners();
 function eventListeners() {
     // Envío del formulario  
     document .querySelector( '#formulario' ) .addEventListener( 'submit', agregarTweet );     // 'submit' ---> Evento de envio de formulario
+
+    // Eliminar 'Tweets'
+    listaTweets .addEventListener( 'click', borrarTweet );
 }
 
 // Agregar Tweet al DOM desde el formulario
@@ -28,4 +31,22 @@ function agregarTweet( event ) {
     li .innerText = tweet;                          // Asigna el contenido del 'tweet' en el elemento 'textarea'
     li.appendChild( botonBorrar );                  // Agrega el elemento 'a' al elemento 'li'
     listaTweets .appendChild( li );                 // Tomamos el elemento Padre en el que vamos a desplegar el elemento en el DOM
+
+}
+
+
+// Eliminar 'Tweet' del DOM desde el enlace X de cada 'Tweet'
+function borrarTweet( event ) {
+    event .preventDefault();            // Prevenir abrir lo que se tenga en el 'action' del formulario
+    console .log( 'borrarTweet() ', 'Click! a la lista' );
+
+    if( event .target .className === 'borrar-tweet' ) {
+        console .log( 'Click! Botón eliminar ', event .target .parentElement );       
+
+        event .target .parentElement .remove();         // Removemos el elemento padre del 'a' y lo enviamos a la consola
+        alert( 'Tweet eliminado' );
+    }/*
+    else {
+        console .log( 'Diste Click en otra parte' );
+    }*/
 }
