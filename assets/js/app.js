@@ -1,4 +1,4 @@
-/* Almacena 'Tweets' en el LocalStorage */
+/* Carga 'Tweets' del LocalStorage en el DOM */
 
 // Constantes y Variables
 const listaTweets = document .getElementById( 'lista-tweets' );     // Obtiene el elemento donde se desplegarán los 'Trinos'
@@ -52,6 +52,10 @@ function borrarTweet( event ) {
         console .log( 'Click! Botón eliminar ', event .target .parentElement );       
 
         event .target .parentElement .remove();         // Removemos el elemento padre del 'a' y lo enviamos a la consola
+        console .log( 'event .target .parentElement ', event .target .parentElement .innerText );
+
+        borrarTweetLocalStorage( event .target .parentElement .innerText );              // Eliminar 'Tweet' del Local Storage (solo el valor)
+
         alert( 'Tweet eliminado' );
     }/*
     else {
@@ -99,7 +103,8 @@ function obtenerDatosLocalStorage () {
 
     console .log( 'obtenerDatosLocalStorage ', tweets );
 
-    // 
+    // Se recorre el 'Array' Se crean los elementos necesarios para su
+    // posterior despliege en el DOM con los valores previamente asignados  
     tweets .forEach( function( tweet ) {
         /* Crea el Botón Eliminar */ 
         const botonBorrar = document .createElement( 'a' );  // Crea elemento 'a' 
@@ -112,4 +117,32 @@ function obtenerDatosLocalStorage () {
         listaTweets .appendChild( li );                 // Tomamos el elemento Padre en el que vamos a desplegar el elemento en el DOM
 
     });
+}
+
+// Borrar Tweet del LocalStorage
+function borrarTweetLocalStorage( tweet ) { 
+    let tweets, tweetABorrar;
+
+    tweets = obtenerTweetsLocalStorage();                         
+    console .log( 'borrarTweetLocalStorage ', tweet );
+
+    /* Eliminar la X del Tweet */
+    tweetABorrar = tweet .substring( 0, tweet .length - 1 );      // Corte la parte final
+    console .log( 'tweetABorrar ', tweetABorrar );
+
+    /* Recorremos el 'Array' de 'Tweets' para buscar y eliminar el 'Tweet' seleccionado */
+    tweets .forEach( function( tweet, index ) {
+        console .log( ' - ', tweet );
+
+        /* Valida si el 'Tweet' a Borrar es el mismo en el indice indicado del 'Array' */
+        if( tweetABorrar === tweet ) {
+            tweets .splice( index, 1 );  
+            console .log( 'Indice del Array que se elimina ', index );
+        }
+    });
+
+    console .log( 'tweets (Array) ', tweets );
+
+    /* Actualizamos el LocalStorage (Guardamos los cambios) convirtiendo antes el 'Array' en un 'String' */ 
+    localStorage .setItem( 'tweets', JSON .stringify( tweets ) );   
 }
